@@ -1,0 +1,38 @@
+create database lab;
+
+create database lab;
+
+CREATE TABLE CLIENT_MASTER(client_no VARCHAR(6) PRIMARY KEY, name VARCHAR(20), city VARCHAR(20), pincode VARCHAR(6), bal_due INT);
+
+
+CREATE TABLE SALE_ORDER(order_no VARCHAR(10), order_date DATE, client_no_ref VARCHAR(6), order_status VARCHAR(20), delivery_date DATE, FOREIGN KEY (client_no_ref) REFERENCES CLIENT_MASTER(client_no));
+
+INSERT INTO CLIENT_MASTER VALUES('C00001', 'Alex', 'Kochi', '672003',0),('C00002', 'Nia', 'Kozhikode', '673024',10000),('C00003', 'Cia', 'Mumbai', '622003',7000),('C00004', 'Peter', 'Delhi', '671002',0),('C00005', 'Ishan', 'Mumbai','622004',1000);
+Query OK, 5 rows affected (0.10 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+select *  from CLIENT_MASTER;
+
+a) SELECT * FROM CLIENT_MASTER where bal_due=0;
+
+b) UPDATE CLIENT_MASTER SET city='Jaipur' where client_no='C0004';
+
+c) SELECT * FROM CLIENT_MASTER where city='Mumbai';
+
+ INSERT INTO SALE_ORDER VALUES('O19003','2023-08-12','C00001','DELIVERED','2023-08-15'),('O19002','2023-09-15','C00002','ACCEPTED','2023-09-20'),('O19004','2023-11-25','C00003','FAILED','2023-12-02'),('O19005','2023-11-11','C00004','DELIVERED','2023-11-17'),('O19006','2023-11-18','C00005','PROCESSING','2023-11-28');
+
+INSERT INTO SALE_ORDER VALUES('O19003','2023-08-12','C00001','DELIVERED','2023-08-15'),('O19002','2023-09-15','C00002','ACCEPTED','2023-09-20'),('O19004','2023-11-25','C00003','FAILED','2023-12-02'),('O19005','2023-11-11','C00004','DELIVERED','2023-11-17'),('O19006','2023-11-18','C00005','PROCESSING','2023-11-28');
+
+d) SELECT name,city, pincode FROM CLIENT_MASTER, SALE_ORDER where (CLIENT_MASTER.client_no=SALE_ORDER.client_no_ref) and (SALE_ORDER.order_no='O19003' or SALE_ORDER.order_no='O19002');
+
+e) SELECT client_no, name, city, pincode FROM CLIENT_MASTER, SALE_ORDER where CLIENT_MASTER.client_no=SALE_ORDER.client_no_ref AND order_status='PROCESSING';
+
+
+
+
+
+
+
+
+
+
