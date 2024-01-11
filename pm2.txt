@@ -1,0 +1,20 @@
+CREATE TABLE employee(empid INT, fname VARCHAR(10),lname VARCHAR(20),email VARCHAR(20), phno VARCHAR(10), hire_date DATE, job_id INT, salary
+INT, manager_id INT, dept_id INT);
+
+
+insert into employee values(166,'Arun','M S','arun@gmail.com','903456781','2024-01-9',100,34000,200,300),(167,'Abhilash','H','abhilash@gmail.com','953978596','2024-01-08',101,20000,201,301),(169,'Ammu','S','ammus@gmail.com','903847567','2024-01-07',102,35600,202,303),
+(145,'Ajay','P','ajayp@gmail.com','903454556','2024-01-03',103,25600,203,304),(3,'Unni','S','unnis@gmail.com','9038342424','2024-01-17',104,34600,204,305);
+
+UPDATE employee SET phno='9080706050' where empid=3;
+
+SELECT fname,lname from employee where salary>(select salary from employee where empid=167);
+SELECT concat(fname,lname) as name, salary, dept_id,job_id from employee where job_id=(select job_id from employee where empid=169);
+
+
+
+
+
+
+
+
+
