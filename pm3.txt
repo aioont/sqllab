@@ -1,1 +1,35 @@
+CREATE TABLE supplier(sno INT, sname VARCHAR(20),city VARCHAR(20),
+phno VARCHAR(10));
+
+INSERT INTO supplier VALUES(101, 'XS', 'Kochi','9080706050'),(102,
+'KOO', 'Delhi','9087665451');
+
+CREATE VIEW supplier_view AS SELECT sno,sname,city,phno from supplier;
+
+SELECT * FROM supplier_view;
+
+UPDATE supplier_view SET sname="KY" WHERE sno=2;
+
+SELECT * FROM supplier;
+
+DROP VIEW supplier_view;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
