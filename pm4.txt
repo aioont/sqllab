@@ -1,0 +1,27 @@
+CREATE TABLE temployee(number INT, name VARCHAR(20),designation VARCHAR(20),salary INT, dob DATE, dojoin DATE, depno INT);
+
+
+INSERT INTO temployee (number, name, designation, salary, dob, dojoin, depno)
+VALUES
+    (1, 'John Doe', 'Manager', 60000, '1990-05-15', '2010-01-15', 101),
+    (2, 'Jane Smith', 'Developer', 50000, '1988-08-20', '2015-03-10', 102),
+    (3, 'Bob Johnson', 'Analyst', 45000, '1995-11-25', '2018-07-05', 103);
+
+CREATE INDEX index_employee_name ON temployee(name);
+
+SELECT * FROM temployee WHERE name IN ('John Doe', 'Jane Smith', 'Bob Johnson');
+
+DROP INDEX index_employee_name ON temployee;
+
+DELETE FROM temployee;
+
+ALTER TABLE temployee MODIFY COLUMN number INT AUTO_INCREMENT PRIMARY KEY;
+
+INSERT INTO temployee(name, designation, salary, dob, dojoin,depno)
+ values('Nia','Manager',45000,'2000-07-15', '2020-02-22',104);
+
+
+INSERT INTO temployee(name, designation, salary, dob, dojoin,depno) values('Alia','Sales',35000,'2002-02-13', '2020-05-24',105);
+
+
+SELECT * FROM temployee;
