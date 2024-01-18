@@ -1,0 +1,6 @@
+CREATE TABLE suppliers(sno INT PRIMARY KEY,sname VARCHAR(20),city varchar(20));
+
+CREATE TABLE parts(partno INT PRIMARY KEY, partname VARCHAR(20), color VARCHAR(20), weight INT, city varchar(20));
+
+
+
