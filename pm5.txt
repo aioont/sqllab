@@ -1,6 +1,43 @@
-CREATE TABLE suppliers(sno INT PRIMARY KEY,sname VARCHAR(20),city varchar(20));
+CREATE TABLE suppliers(sno VARCHAR(5) PRIMARY KEY,sname VARCHAR(20),city varchar(20));
 
-CREATE TABLE parts(partno INT PRIMARY KEY, partname VARCHAR(20), color VARCHAR(20), weight INT, city varchar(20));
+CREATE TABLE parts(partno VARCHAR(5) PRIMARY KEY, partname VARCHAR(20), color VARCHAR(20), weight INT, city varchar(20));
+
+CREATE TABLE shipment(
+    sno_fkey VARCHAR(5),
+    pno_fkey VARCHAR(5),
+    quantity INT,
+    PRIMARY KEY (sno_fkey, pno_fkey),
+    FOREIGN KEY (sno_fkey) REFERENCES suppliers(sno),
+    FOREIGN KEY (pno_fkey) REFERENCES parts(partno)
+);
+
+INSERT INTO suppliers (sno, sname, city) VALUES('S1', 'Supplier1', 'City1'),('S2', 'Supplier2', 'City2'),('S3', 'Supplier3', 'City3');
+
+
+INSERT INTO parts (partno, partname, color, weight, city) VALUES('P1', 'Part1', 'Red', 10, 'CityA'),('P2', 'Part2', 'Blue', 20, 'CityB'),('P3', 'Part3', 'Green', 15, 'CityC');
+
+INSERT INTO shipment (sno_fkey, pno_fkey, quantity) VALUES('S1', 'P1', 50),('S2', 'P2', 30),('S3', 'P3', 20);
+
+UPDATE suppliers SET city='Hyderabad' where sno='S1';
+
+UPDATE shipment SET quantity=quantity+10;
+
+SELECT s.sname FROM suppliers s JOIN shipment sh ON s.sno = sh.sno_fkey JOIN parts p ON p.partno = sh.pno_fkey WHERE p.partno = 'P1';
+
+OR
+
+SELECT sname FROM suppliers, shipment where shipment.sno_fkey=suppliers.sno and shipment.pno_fkey='P1';
+
+ INSERT INTO suppliers (sno, sname, city) VALUES('S5', 'Supplier5',
+'Hyderabad');
+
+SELECT sno FROM suppliers where city=(SELECT city from suppliers where sno='S1');
+
+
+
+SELECT sno FROM suppliers join shipment on suppliers.sno=shipment.sno_fkey where pno_fkey=(select pno_fkey from shipment where sno=102);
+Empty set (0.00 sec)
+
 
 
 
