@@ -28,15 +28,29 @@ OR
 
 SELECT sname FROM suppliers, shipment where shipment.sno_fkey=suppliers.sno and shipment.pno_fkey='P1';
 
- INSERT INTO suppliers (sno, sname, city) VALUES('S5', 'Supplier5',
+INSERT INTO suppliers (sno, sname, city) VALUES('S5', 'Supplier5',
 'Hyderabad');
 
 SELECT sno FROM suppliers where city=(SELECT city from suppliers where sno='S1');
 
 
+INSERT INTO suppliers (sno, sname, city) VALUES('S6', 'Supplier6',
+'City6');
+INSERT INTO parts (partno, partname, color, weight, city) VALUES('P5', 'Part5', 'Red335', 130, 'CityAfee');
+INSERT INTO shipment (sno_fkey, pno_fkey, quantity) VALUES('S6', 'P2', 50);
 
-SELECT sno FROM suppliers join shipment on suppliers.sno=shipment.sno_fkey where pno_fkey=(select pno_fkey from shipment where sno=102);
-Empty set (0.00 sec)
+
+SELECT sno
+FROM suppliers
+WHERE sno NOT IN (
+    SELECT DISTINCT s.sno
+    FROM suppliers s
+    JOIN shipment sh ON s.sno = sh.sno_fkey
+    WHERE sh.pno_fkey IN (SELECT pno_fkey FROM shipment WHERE sno_fkey = 'S2')
+);
+
+
+
 
 
 
