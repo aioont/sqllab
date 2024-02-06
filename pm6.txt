@@ -1,0 +1,56 @@
+CREATE TABLE product(p_code INT PRIMARY KEY NOT NULL, description VARCHAR(20), stocking_date DATE, QtyOnHand INT, MinQty INT, prices INT, discount INT, v_code INT);
+Query OK, 0 rows affected (0.69 sec)
+
+mysql> CREATE TABLE vendor(v_code INT, name varchar(20), address VARCHAR(30), phone VARCHAR(10));
+Query OK, 0 rows affected (0.46 sec)
+
+INSERT INTO vendor (v_code, name, address, phone)
+    -> VALUES
+    ->     (1, 'Vendor1', '123 Main St', '1234567890'),
+    ->     (2, 'Vendor2', '456 Oak St', '9876543210'),
+    ->     (3, 'Vendor3', '789 Pine St', '5551112233'),
+    ->     (4, 'Vendor4', '242 Ine Park', '9088112233');
+
+Query OK, 4 rows affected (0.12 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+INSERT INTO product (p_code, description, stocking_date, QtyOnHand, MinQty, prices, discount, v_code)
+    -> VALUES
+    ->     (101, 'Product1', '2024-02-06', 50, 10, 25, 5, 1),
+    ->     (102, 'Product2', '2024-02-06', 30, 5, 20, 3, 2),
+    ->     (103, 'Product3', '2024-02-06', 20, 8, 30, 7, 3),
+    ->     (104, 'Product4', '2024-03-10', 60, 15, 30, 10, 2);
+
+Query OK, 4 rows affected (0.12 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+
+SELECT name FROM vendor WHERE v_code IN(SELECT v_code from product group by v_code having count(*)>1);
+
++---------+
+| name    |
++---------+
+| Vendor2 |
++---------+
+1 row in set (0.00 sec)
+
+
+SELECT * FROM product WHERE product > (SELECT AVG(prices) FROM product);
++-------------+
+| avg(prices) |
++-------------+
+|     26.2500 |
++-------------+
+1 row in set (0.00 sec)
+
+
+SELECT name,address, phone FROM vendor WHERE v_code NOT IN(SELECT DISTINCT v_code FROM product);
++---------+--------------+------------+
+| name    | address      | phone      |
++---------+--------------+------------+
+| Vendor4 | 242 Ine Park | 9088112233 |
++---------+--------------+------------+
+1 row in set (0.00 sec)
+
+
+
