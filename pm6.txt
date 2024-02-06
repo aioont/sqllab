@@ -34,8 +34,17 @@ SELECT name FROM vendor WHERE v_code IN(SELECT v_code from product group by v_co
 +---------+
 1 row in set (0.00 sec)
 
+mysql> SELECT * FROM product WHERE prices > (SELECT AVG(prices) FROM product);
++--------+-------------+---------------+-----------+--------+--------+----------+--------+
+| p_code | description | stocking_date | QtyOnHand | MinQty | prices | discount | v_code |
++--------+-------------+---------------+-----------+--------+--------+----------+--------+
+|    103 | Product3    | 2024-02-06    |        20 |      8 |     30 |        7 |      3 |
+|    104 | Product4    | 2024-03-10    |        60 |     15 |     30 |       10 |      2 |
++--------+-------------+---------------+-----------+--------+--------+----------+--------+
+2 rows in set (0.00 sec)
 
-SELECT * FROM product WHERE product > (SELECT AVG(prices) FROM product);
+
+SELECT avg(prices) FROM product;
 +-------------+
 | avg(prices) |
 +-------------+
