@@ -158,6 +158,36 @@ students> db.student.find().sort({cgpa:1}).limit(2)
   }
 ]
 
+students> db.student.find().sort({cgpa:1}).limit(2)
+[
+  {
+    _id: ObjectId('65c5b29e2210e2d16c82e0f2'),
+    name: 'Cia',
+    rollno: 12,
+    cgpa: 7.4
+  },
+  {
+    _id: ObjectId('65c5b29e2210e2d16c82e0f1'),
+    name: 'Nina',
+    rollno: 11,
+    cgpa: 8
+  }
+]
+students> db.student.find({rollno:11})
+[
+  {
+    _id: ObjectId('65c5b29e2210e2d16c82e0f1'),
+    name: 'Nina',
+    rollno: 11,
+    cgpa: 8
+  }
+]
+students> db.student.find({rollno:11},{_id:false, name:true, cgpa:true})
+[ { name: 'Nina', cgpa: 8 } ]
+students> 
+
+
+
 
 
 
