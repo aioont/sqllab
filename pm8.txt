@@ -12,63 +12,6 @@ for $x in /breakfast_menu/food
   where $x/name=["French Toast"]
   return <descriptions>{$x/description}</descriptions>
 
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-
-  <xsl:template match='/'>
-    <html>
-      <head>
-        <style>
-          body {
-            font-family: Arial, sans-serif;
-          }
-          h2 {
-            color: #336699;
-          }
-          table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-top: 20px;
-          }
-          th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-          }
-          th {
-            background-color: #f2f2f2;
-          }
-        </style>
-      </head>
-      <body>
-        <h2>Food Menu</h2>
-        <xsl:apply-templates select='/menu/category'/>
-      </body>
-    </html>
-  </xsl:template>
-
-  <xsl:template match='category'>
-    <h3>
-      <xsl:value-of select="@name"/>
-    </h3>
-    <table>
-      <tr>
-        <th>Name</th>
-        <th>Price</th>
-      </tr>
-      <xsl:apply-templates select='item' />
-    </table>
-  </xsl:template>
-
-  <xsl:template match='item'>
-    <tr>
-      <td><xsl:value-of select='name' /></td>
-      <td><xsl:value-of select='price' /></td>
-    </tr>
-  </xsl:template>
-
-</xsl:stylesheet>
-
 <breakfast_menu>
 <food>
 <name>Belgian Waffles</name>
@@ -111,4 +54,86 @@ Two eggs, bacon or sausage, toast, and our ever-popular hash browns
 <calories>950</calories>
 </food>
 </breakfast_menu>
+
+
+
+
+let $y := /breakfast_menu
+
+let $x := 
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:template match="/">
+    <HTML>
+      <BODY STYLE="Arial, helvetica, sans-serif; font-size:12pt;
+            background-color:#EEEEEE">
+        <xsl:for-each select="breakfast_menu/food">
+          <DIV STYLE="background-color:teal; color:white; padding:4px">
+            <SPAN STYLE="font-weight:bold; color:white"><xsl:value-of select="name"/></SPAN>
+            - <xsl:value-of select="price"/>
+          </DIV>
+          <DIV STYLE="20px; 1em; font-size:10pt">
+            <xsl:value-of select="description"/>
+            <SPAN STYLE="font-style:italic">
+              (<xsl:value-of select="calories"/> calories per serving)
+            </SPAN>
+          </DIV>
+        </xsl:for-each>
+      </BODY>
+    </HTML>
+  </xsl:template>
+</xsl:stylesheet>
+
+return xslt:transform($y, $x)
+
+
+<HTML>
+    <BODY STYLE="Arial, helvetica, sans-serif; font-size:12pt;             background-color:#EEEEEE">
+        <DIV STYLE="background-color:teal; color:white; padding:4px">
+            <SPAN STYLE="font-weight:bold; color:white">Belgian Waffles</SPAN>
+            - 5.95
+        </DIV>
+        <DIV STYLE="20px; 1em; font-size:10pt">
+            Two of our famous Belgian Waffles with plenty of real maple syrup<SPAN STYLE="font-style:italic">
+              (650 calories per serving)
+            </SPAN>
+        </DIV>
+        <DIV STYLE="background-color:teal; color:white; padding:4px">
+            <SPAN STYLE="font-weight:bold; color:white">Strawberry Belgian Waffles</SPAN>
+            - 7.95
+        </DIV>
+        <DIV STYLE="20px; 1em; font-size:10pt">
+            Light Belgian waffles covered with strawberries and whipped cream<SPAN STYLE="font-style:italic">
+              (900 calories per serving)
+            </SPAN>
+        </DIV>
+        <DIV STYLE="background-color:teal; color:white; padding:4px">
+            <SPAN STYLE="font-weight:bold; color:white">Berry-Berry Belgian Waffles</SPAN>
+            - 8.95
+        </DIV>
+        <DIV STYLE="20px; 1em; font-size:10pt">
+            Light Belgian waffles covered with an assortment of fresh berries and whipped cream<SPAN STYLE="font-style:italic">
+              (900 calories per serving)
+            </SPAN>
+        </DIV>
+        <DIV STYLE="background-color:teal; color:white; padding:4px">
+            <SPAN STYLE="font-weight:bold; color:white">French Toast</SPAN>
+            - 4.50
+        </DIV>
+        <DIV STYLE="20px; 1em; font-size:10pt">
+            Thick slices made from our homemade sourdough bread<SPAN STYLE="font-style:italic">
+              (600 calories per serving)
+            </SPAN>
+        </DIV>
+        <DIV STYLE="background-color:teal; color:white; padding:4px">
+            <SPAN STYLE="font-weight:bold; color:white">Homestyle Breakfast</SPAN>
+            - 6.95
+        </DIV>
+        <DIV STYLE="20px; 1em; font-size:10pt">
+            Two eggs, bacon or sausage, toast, and our ever-popular hash browns<SPAN STYLE="font-style:italic">
+              (950 calories per serving)
+            </SPAN>
+        </DIV>
+    </BODY>
+</HTML>
 
