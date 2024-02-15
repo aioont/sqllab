@@ -30,6 +30,11 @@ SELECT name, city, pincode from CLIENT_MASTER WHERE cno in (SELECT cnofk from SA
 
 e) SELECT client_no, name, city, pincode FROM CLIENT_MASTER, SALE_ORDER where CLIENT_MASTER.client_no=SALE_ORDER.client_no_ref AND order_status='PROCESSING';
 
+SELECT cno, name, city, pinocode
+FROM CLIENT_MASTER
+WHERE cno IN (SELECT cnofk FROM SALE_ORDER WHERE order_status = 'In process');
+
+
 
 
 
