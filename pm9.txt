@@ -1,8 +1,8 @@
 <html>
     <body>
-        <h2>My Plant Collection</h2>
-        <table border="1">
-            <tr bgcolor="#9acd32">
+        <h3 align="center">My Plant Collection</h3>
+        <table border="2">
+            <tr bgcolor="#F72703">
                 <th>COMMON</th>
         <th>BOTANICAL</th>
         <th>ZONE</th>
