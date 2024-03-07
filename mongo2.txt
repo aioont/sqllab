@@ -13,3 +13,77 @@
 6. db.employee.updateMany({ dno: 1 }, { $inc: { salary: 1000 } });
 
 7. db.employee.deleteMany({ salary: { $lt: 20000 } });
+
+
+students> db.employee.find({ $and: [ { salary: { $gt: 40000 } }, { dno: 4 }] });
+[
+  {
+    _id: ObjectId('65e99e68e2c07e2d4e3f0fe2'),
+    eid: 104,
+    ename: 'John',
+    sex: 'Male',
+    address: 'Chennai',
+    salary: 43000,
+    dno: 4
+  }
+]
+students> db.employee.find({ $or: [ { salary: { $gt: 40000 } }, { dno: 4 }] });
+[
+  {
+    _id: ObjectId('65e99e68e2c07e2d4e3f0fe0'),
+    eid: 102,
+    ename: 'Alex',
+    sex: 'Male',
+    address: 'Kolkata',
+    salary: 32790,
+    dno: 4
+  },
+  {
+    _id: ObjectId('65e99e68e2c07e2d4e3f0fe1'),
+    eid: 103,
+    ename: 'Merry',
+    sex: 'Female',
+    address: 'Delhi',
+    salary: 42000,
+    dno: 2
+  },
+  {
+    _id: ObjectId('65e99e68e2c07e2d4e3f0fe2'),
+    eid: 104,
+    ename: 'John',
+    sex: 'Male',
+    address: 'Chennai',
+    salary: 43000,
+    dno: 4
+  }
+]
+students> db.employee.find({
+...   $and: [
+...     { salary: { $gt: 40000 } },
+...     { dno: { $not: { $eq: 4 } } }
+...   ]
+... });
+[
+  {
+    _id: ObjectId('65e99e68e2c07e2d4e3f0fe1'),
+    eid: 103,
+    ename: 'Merry',
+    sex: 'Female',
+    address: 'Delhi',
+    salary: 42000,
+    dno: 2
+  }
+]
+students> db.employee.find({ $and: [ { salary: { $gt: 40000 } }, { dno: { $not: { $eq: 4 } } }] });
+[
+  {
+    _id: ObjectId('65e99e68e2c07e2d4e3f0fe1'),
+    eid: 103,
+    ename: 'Merry',
+    sex: 'Female',
+    address: 'Delhi',
+    salary: 42000,
+    dno: 2
+  }
+]
+students> 
