@@ -1,0 +1,15 @@
+	db.createCollection("employee");
+
+1. db.employee.insertMany([ { eid: 1011, ename: "Rohith", sex: "Male", address: "Mumbai", salary: 42000, dno: 1 }, { eid: 1012, ename: "Selvaraj", sex: "Male", address: "Chennai", salary: 32790, dno: 4 }, { eid: 1013, ename: "Martin", sex: "Male", address: "Kottayam", salary: 45000, dno: 2 }, { eid: 1014, ename: "Sindhu", sex: "Female", address: "Kannur", salary: 50000, dno: 4 }, { eid: 1015, ename: "Komal", sex: "Female", address: "Pune", salary: 36000, dno: 1 }, { eid: 1016, ename: "Rashmika", sex: "Female", address: "Chennai", salary: 15000, dno: 3 } ]);
+
+2. db.employee.find({});
+
+3. db.employee.find({ salary: { $gt: 35000 } });
+
+4. db.employee.find({ sex: "Female" }, { eid: 1, ename: 1, _id: 0 });
+
+5. db.employee.find({ salary: { $gt: 40000 }, dno: 4 });
+
+6. db.employee.updateMany({ dno: 1 }, { $inc: { salary: 1000 } });
+
+7. db.employee.deleteMany({ salary: { $lt: 20000 } });
