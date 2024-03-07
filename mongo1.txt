@@ -1,0 +1,129 @@
+test> use students
+switched to db students
+students> db.createCollection('invoice');
+{ ok: 1 }
+students> db.invoice.insertOne({
+      in_no: 0002,
+      customerName: "John",
+      items: [
+        { item: "C", quantity: 3, price: 15.00 },
+        { item: "D", quantity: 1, price: 8.50 }
+      ],
+    });
+{
+  acknowledged: true,
+  insertedId: ObjectId('65e99ac6e2c07e2d4e3f0fda')
+}
+students> db.invoice.insertMany([
+      {
+        in_no: 0006,
+        customerName: "Chris",
+        items: [
+          { item: "D", quantity: 4, price: 12.00 },
+          { item: "E", quantity: 3, price: 5.00 }
+        ],
+      },
+      {
+        in_no: 0007,
+        customerName: "David",
+        items: [
+          { item: "F", quantity: 1, price: 8.00 },
+          { item: "G", quantity: 2, price: 15.00 }
+        ],
+      },
+      {
+        in_no: 0008,
+        customerName: "Diana",
+        items: [
+          { item: "H", quantity: 3, price: 20.00 },
+          { item: "I", quantity: 4, price: 7.50 }
+        ],
+      },
+      {
+        in_no: 0009,
+        customerName: "Daniel",
+        items: [
+          { item: "J", quantity: 2, price: 18.00 },
+          { item: "K", quantity: 5, price: 12.00 }
+        ],
+      },
+    ]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('65e99b3ce2c07e2d4e3f0fdb'),
+    '1': ObjectId('65e99b3ce2c07e2d4e3f0fdc'),
+    '2': ObjectId('65e99b3ce2c07e2d4e3f0fdd'),
+    '3': ObjectId('65e99b3ce2c07e2d4e3f0fde')
+  }
+}
+students> db.invoice.updateMany({}, [ { "$set": { "totalAmount": { "$sum": { "$map": { "input": "$items", "as": "item", "in": { "$multiply": ["$$item.quantity", "$$item.price"] } } } } } } ]);
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 5,
+  modifiedCount: 5,
+  upsertedCount: 0
+}
+students> db.invoice.find()
+[
+  {
+    _id: ObjectId('65e99ac6e2c07e2d4e3f0fda'),
+    in_no: 2,
+    customerName: 'John',
+    items: [
+      { item: 'C', quantity: 3, price: 15 },
+      { item: 'D', quantity: 1, price: 8.5 }
+    ],
+    totalAmount: 53.5
+  },
+  {
+    _id: ObjectId('65e99b3ce2c07e2d4e3f0fdb'),
+    in_no: 6,
+    customerName: 'Chris',
+    items: [
+      { item: 'D', quantity: 4, price: 12 },
+      { item: 'E', quantity: 3, price: 5 }
+    ],
+    totalAmount: 63
+  },
+  {
+    _id: ObjectId('65e99b3ce2c07e2d4e3f0fdc'),
+    in_no: 7,
+    customerName: 'David',
+    items: [
+      { item: 'F', quantity: 1, price: 8 },
+      { item: 'G', quantity: 2, price: 15 }
+    ],
+    totalAmount: 38
+  },
+  {
+    _id: ObjectId('65e99b3ce2c07e2d4e3f0fdd'),
+    in_no: 8,
+    customerName: 'Diana',
+    items: [
+      { item: 'H', quantity: 3, price: 20 },
+      { item: 'I', quantity: 4, price: 7.5 }
+    ],
+    totalAmount: 90
+  },
+  {
+    _id: ObjectId('65e99b3ce2c07e2d4e3f0fde'),
+    in_no: 9,
+    customerName: 'Daniel',
+    items: [
+      { item: 'J', quantity: 2, price: 18 },
+      { item: 'K', quantity: 5, price: 12 }
+    ],
+    totalAmount: 96
+  }
+]
+students> db.invoice.updateOne({in_no: 2}, [ { "$set": { "totalAmount": { "$sum": { "$map": { "input": "$items", "as": "item", "in": { "$multiply": ["$$item.quantity", "$$item.price"] } } } } } } ]);
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+students> 
