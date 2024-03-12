@@ -1,0 +1,15 @@
+{
+ "name": "Nia",
+ "age": 34,
+ "address": {
+  "street": "Green Villa",
+  "city":"Ernakulam",
+  "country": "India",
+ }
+ "active": true,
+ "languages": ["Malayalam", "English", "Hindi"],
+ "nominee": {
+    "nominee_name": "Alex"
+    "age": 38
+  }
+}
