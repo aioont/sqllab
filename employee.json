@@ -1,0 +1,20 @@
+  GNU nano 6.2                      employee.json                               
+{
+ "employees": {
+   "employee": [
+    {
+     "name": "Raju",
+     "email": "raju@gmail.com"
+   },
+   {
+    "name": "Shiva",
+    "email": "shiva@gmail.com"
+   },
+   {
+    "name": "Jai",
+    "email": "jai@gmail.com"
+   }
+  ]
+ }
+}
+
