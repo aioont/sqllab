@@ -1,0 +1,19 @@
+  GNU nano 6.2                      fourobj.json                                
+[
+ {
+  "name": 'Alia',
+  "age": 20
+ },
+ {
+  "name": 'Bob',
+   "is_active": true
+ },
+ {
+  "name": 'Charlie',
+  "country": 'India'  
+ },
+ {
+ "name": 'Diana',
+ "age": 23
+ }
+]
