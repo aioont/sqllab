@@ -1,0 +1,179 @@
+index.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAuth</title>
+
+    <!-- Firebase SDK -->
+    <script defer src="/__/firebase/10.8.1/firebase-app-compat.js"></script>
+    <script defer src="/__/firebase/10.8.1/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/10.8.1/firebase-firestore-compat.js"></script>
+    <!-- Initialize Firebase SDK -->
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
+    <!-- CSS Styles -->
+    <style>
+        body {
+            background: #ECEFF1;
+            color: rgba(0,0,0,0.87);
+            font-family: Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        #message {
+            background: white;
+            max-width: 360px;
+            margin: 100px auto 16px;
+            padding: 32px 24px;
+            border-radius: 3px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        }
+        #message h2 {
+            color: #ffa100;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 0 0 8px;
+        }
+        #message h1 {
+            font-size: 22px;
+            font-weight: 300;
+            color: rgba(0,0,0,0.6);
+            margin: 0 0 16px;
+        }
+        #message p {
+            line-height: 140%;
+            margin: 16px 0 24px;
+            font-size: 14px;
+        }
+        #message a {
+            display: block;
+            text-align: center;
+            background: #039be5;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: white;
+            padding: 16px;
+            border-radius: 4px;
+        }
+        .book-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        table {
+        	border-radius: 10px;
+        	border: 2px solid blue;
+        	padding: 10px;
+        }
+        td, th { 
+           border-radius: 10px;
+           padding: 5px;
+        }
+        
+        th {
+          color: red;
+        }
+   	td {
+          color: green;
+        }
+   
+   
+        .book-table th, .book-table td {
+            border: 1px solid #DEE344;
+            text-align: left;
+            padding: 8px;
+        }
+        .book-table th {
+            background-color: #f2f2f2;
+        }
+        @media (max-width: 600px) {
+            body, #message {
+                margin-top: 0;
+                background: white;
+                box-shadow: none;
+            }
+            body {
+                border-top: 16px solid #ffa100;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="message">
+        <h2>Welcome</h2>
+        <div id="bookInfo"></div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
+
+
+
+app.js
+
+function GoogleLogin() {
+   const provider = new firebase.auth.GoogleAuthProvider();
+
+   firebase.auth().signInWithPopup(provider)
+   .then(result => {
+      const user = result.user;
+   });
+}
+
+document.addEventListener('DOMContentLoaded', event => {
+
+    const app = firebase.app();
+    const db = firebase.firestore();
+
+    // Reference the document
+    const myPost = db.collection('books').doc('book1');
+
+   // const productsRef = db.collection('books');
+
+  //  const query  = productsRef.where('price', '<=' , 400)
+
+   // query.onSnapshot(products => {
+
+     //     products.forEach(doc => {
+       //   const data = doc.data();
+        //  document.write(data.author +'<br>'+ data.title + '<br>' + data.price +'<br>')
+        //  console.log(data)
+//  })
+
+// });
+
+     const bookInfoElement = document.getElementById('bookInfo');
+
+    // Listen to realtime changes 
+    myPost.onSnapshot(doc => {
+        const data = doc.data();
+
+        // Construct HTML to display the data
+        const html = `<table border="1px">
+        <tr><th>Author</th>
+               <th>Title</th>
+               <th>Price</th>
+         <tr>
+         <tr>
+            <td>Author: ${data.author}</td>
+            <td>Title: ${data.title}</td>
+            <td>Price: ${data.price}</td>
+          </tr>
+          <table>
+        `;
+
+        // Insert the HTML into the specified element
+        bookInfoElement.innerHTML = html;
+    });
+
+     // Listen to realtime changes 
+     myPost.onSnapshot(doc => {
+
+       const data = doc.data();
+       console.log(data)
+
+     })
+});
