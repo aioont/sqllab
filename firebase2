@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAuth</title>
+
+    <!-- Firebase SDK -->
+    <script defer src="/__/firebase/10.8.1/firebase-app-compat.js"></script>
+    <script defer src="/__/firebase/10.8.1/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/10.8.1/firebase-firestore-compat.js"></script>
+    <!-- Initialize Firebase SDK -->
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
+    <!-- CSS Styles -->
+    <style>
+        body {
+            background: #ECEFF1;
+            color: rgba(0,0,0,0.87);
+            font-family: Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        #message {
+            background: white;
+            max-width: 360px;
+            margin: 100px auto 16px;
+            padding: 32px 24px;
+            border-radius: 3px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        }
+        #message h2 {
+            color: #ffa100;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 0 0 8px;
+        }
+        #message h1 {
+            font-size: 22px;
+            font-weight: 300;
+            color: rgba(0,0,0,0.6);
+            margin: 0 0 16px;
+        }
+        #message p {
+            line-height: 140%;
+            margin: 16px 0 24px;
+            font-size: 14px;
+        }
+        #message a {
+            display: block;
+            text-align: center;
+            background: #039be5;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: white;
+            padding: 16px;
+            border-radius: 4px;
+        }
+        .book-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        table {
+        	border-radius: 10px;
+        	border: 2px solid blue;
+        	padding: 10px;
+        }
+        td, th { 
+           border-radius: 10px;
+           padding: 5px;
+        }
+        
+        th {
+          color: red;
+        }
+   	td {
+          color: green;
+        }
+   
+   
+        .book-table th, .book-table td {
+            border: 1px solid #DEE344;
+            text-align: left;
+            padding: 8px;
+        }
+        .book-table th {
+            background-color: #f2f2f2;
+        }
+        @media (max-width: 600px) {
+            body, #message {
+                margin-top: 0;
+                background: white;
+                box-shadow: none;
+            }
+            body {
+                border-top: 16px solid #ffa100;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="message">
+        <h2>Welcome</h2>
+        <div id="bookInfo"></div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
+
+
+function googleLogin() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    firebase.auth().signInWithPopup(provider)
+        .then(result => {
+            const user = result.user;
+            // Handle successful login if needed
+        })
+        .catch(error => {
+            // Handle login errors if needed
+            console.error("Google login error:", error);
+        });
+}
+
+document.addEventListener('DOMContentLoaded', event => {
+    const app = firebase.app();
+    const db = firebase.firestore();
+
+    // Reference the collection of books
+    const productsRef = db.collection('books');
+
+    // Query for books with price less than or equal to 20
+    const query = productsRef.where('price', '<=', 200);
+
+    // Listen to realtime changes based on the query
+    query.onSnapshot(snapshot => {
+        // Clear the existing content
+        document.getElementById('bookInfo').innerHTML = '';
+
+        // Iterate over the documents in the snapshot
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            // Create HTML elements to display book information
+            const bookInfoElement = document.createElement('div');
+            bookInfoElement.innerHTML = `
+                <p><strong>Author:</strong> ${data.author}</p>
+                <p><strong>Title:</strong> ${data.title}</p>
+                <p><strong>Price:</strong> ${data.price}</p>
+                <hr>
+            `;
+            // Append the book information to the bookInfo container
+            document.getElementById('bookInfo').appendChild(bookInfoElement);
+
+            // Log the data to console
+            console.log(data);
+        });
+    });
+});
