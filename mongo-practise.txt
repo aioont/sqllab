@@ -1,0 +1,42 @@
+db.invoice.insertOne({invoice_no : 'INV001', customer_name:'John Doe', total_amount:50000, items: [{iten_name:'laptop', price:40000, quantity: 10},{item_name:'Phone', price: 20000, quantity:5}]})
+
+db.invoice.insertMany([{invoice_name: 'INV002', customer_name: 'Cia',total_amount: 100000, items: [{item_name:'test1', price: 20000}, {item_name: 'Dart', price:10000}]},{invoice_name: 'INV004', customer_name: 'Dinu',total_amount: 10000, loan: 50000}])
+
+db.invoice.find()
+
+Find the invoice with the highest total amount.
+
+db.invoice.find().sort({total_amount:-1}).limit(1)
+
+Find invoices where the total amount is greater than 50000.
+
+db.invoice.find({total_amount: {$gte: 50000}})
+
+Find invoices where the customer name starts with 'J'.
+
+db.invoice.find({customer_name: {$regex: '^J', $options: 'i'}})
+
+Find invoices where the item name contains 'Phone'.
+
+db.invoice.find({'items.item_name': {$regex: 'Phone', $options: 'i'}})
+
+Find invoices where the quantity of items is greater than 5.
+
+screw> db.invoice.find({'items.quantity': {$gte:10}})
+
+screw> db.invoice.find({quantity: {$gte:15}})
+
+db.invoice.updateMany({'items.item_name': 'test1'},{$set:{quantity: 11}})
+
+Update the total amount of the invoice with invoice number 'INV002' to 120000.
+
+db.invoice.updateMany({'invoice_name':'INV002'}, {$set:{'items.$[].price':120000}})
+
+Add a new item with item name 'Tablet' and price 15000 to the invoice with invoice number 'INV004'.
+
+db.invoice.updateOne({ invoice_name: 'INV004' }, { $set: { 'items.item_name': 'Tablet', 'items.price': 15000 } })
+
+Remove the loan field from the invoice with invoice number 'INV004'.
+
+screw> db.invoice.updateOne({invoice_name: 'INV004'},{$unset: {loan: ''}})
+
