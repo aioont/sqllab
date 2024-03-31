@@ -126,4 +126,22 @@ students> db.invoice.updateOne({in_no: 2}, [ { "$set": { "totalAmount": { "$sum"
   modifiedCount: 0,
   upsertedCount: 0
 }
-students> 
+
+OR
+
+db.invoice.aggregate([
+  { $unwind: "$items" }, // Deconstruct the items array
+  {
+    $group: {
+      _id: "$customerName", // Group by customerName
+      totalAmount: {
+        $sum: { $multiply: ["$items.quantity", "$items.price"] } // Calculate the total amount for each customer
+      }
+    }
+  },
+  {
+    $addFields: {
+      totalAmount: "$totalAmount" // Add the totalAmount field to the documents
+    }
+  }
+])
