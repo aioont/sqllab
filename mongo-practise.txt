@@ -40,3 +40,237 @@ Remove the loan field from the invoice with invoice number 'INV004'.
 
 screw> db.invoice.updateOne({invoice_name: 'INV004'},{$unset: {loan: ''}})
 
+================================================================================================================
+
+Insert multiple documents into a collection:
+
+db.students.insertMany([
+    { name: "John", age: 20 },
+    { name: "Alice", age: 22 },
+    { name: "Bob", age: 25 }
+]);
+
+Insert documents with additional fields:
+
+db.products.insertMany([
+    { name: "Laptop", price: 1000, brand: "Dell" },
+    { name: "Smartphone", price: 500, brand: "Samsung" },
+    { name: "Tablet", price: 300, brand: "Apple" }
+]);
+
+Insert documents with arrays:
+
+db.orders.insertMany([
+    { customer: "Alice", products: ["Laptop", "Tablet"] },
+    { customer: "Bob", products: ["Smartphone"] },
+    { customer: "John", products: ["Laptop", "Smartphone", "Tablet"] }
+]);
+
+=================================================================================================================
+Insert all the given documents to the employee collection:
+
+db.employee.insertMany([
+    { eid: 1011, Ename: "Rohith", sex: "Male", address: "Mumbai", salary: 42000, dno: 1 },
+    { eid: 1012, Ename: "Selvaraj", sex: "Male", address: "Chennai", salary: 32790, dno: 4 },
+    { eid: 1013, Ename: "Martin", sex: "Male", address: "Kottayam", salary: 45000, dno: 2 },
+    { eid: 1014, Ename: "Sindhu", sex: "Female", address: "Kannur", salary: 50000, dno: 4 },
+    { eid: 1015, Ename: "Komal", sex: "Female", address: "Pune", salary: 36000, dno: 1 },
+    { eid: 1016, Ename: "Rashmika", sex: "Female", address: "Chennai", salary: 15000, dno: 3 }
+]);
+
+Display the details of employees whose salary greater than 35000:
+
+db.employee.find({ salary: { $gt: 35000 } });
+
+Display the eid, ename of all female employees:
+
+db.employee.find({ sex: "Female" }, { _id: 0, eid: 1, Ename: 1 });
+
+Display the name of employees working in department number 4 getting salary less than 40000:
+
+db.employee.find({ dno: 4, salary: { $lt: 40000 } }, { _id: 0, Ename: 1 });
+
+Increment the salary of all employees working in the department number 1:
+
+db.employee.updateMany({ dno: 1 }, { $inc: { salary: 5000 } });
+
+Terminate the employees whose salary less than 20000:
+
+db.employee.deleteMany({ salary: { $lt: 20000 } });
+================================================================================================================
+
+a. Insert a new book document with the following details:
+
+Title: "The Great Gatsby"
+Author: "F. Scott Fitzgerald"
+Genre: "Fiction"
+Price: 12.99
+Quantity: 25
+
+db.books.insertOne({
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "genre": "Fiction",
+    "price": 12.99,
+    "quantity": 25
+})
+
+
+b. Update the quantity of the book with title "The Great Gatsby" to 30.
+
+db.books.updateOne({title: 'The Great Gatsby'}, {$unset: {quantity: 30}}) 
+
+
+c. Find all books with a price less than or equal to 10.
+
+db.books.find({ price: { $lte: 10 } })
+
+d. Remove all books with a quantity less than 10.
+
+db.books.deleteMany({quantity: {$lt:10}}) 
+
+
+===============================================================================================================
+Collection named sales. Each document in the sales collection represents a sale transaction with fields such as date, product, quantity, and total_amount. Perform the following tasks:
+
+let salesData = [
+    { date: new Date('2024-03-01'), product: 'Gun', quantity: 3, price: 40000 },
+    { date: new Date('2024-04-23'), product: 'Granade', quantity: 5, price: 5000 },
+    { date: new Date('2024-04-12'), product: 'Aid kit', quantity: 23, price: 8000 }
+];
+
+screw> db.sales.insertMany(salesData)
+
+
+a. Calculate the total number of sales transactions.
+
+db.sales.countDocuments()
+
+b. Determine the total revenue generated from sales.
+
+full sum
+
+db.sales.aggregate([
+    {
+        $group: {
+            _id: null,
+            totalRevenue: { $sum: "$total_amount" }
+        }
+    }
+])
+
+group by sum
+db.sales.aggregate([ { $project: { product: 1, quantity: 1, price: 1, total_amount: { $multiply: ['$price', '$quantity'] } } }] )
+
+
+c. Find the date with the highest total sales revenue.
+
+db.sales.find({}, { _id: 0, date: 1, product: 1, total_amount: 1 }).sort({ 'total_amount': -1 }).limit(1)
+
+db.sales.aggregate([
+    {
+        $group: {
+            _id: "$date",
+            totalRevenue: { $sum: { $multiply: ["$price", "$quantity"] } }
+        }
+    },
+    {
+        $sort: { totalRevenue: -1 }
+    },
+    {
+        $limit: 1
+    }
+])
+
+
+d. Calculate the average quantity of products sold per transaction.
+
+Explain db.sales.aggregate([
+  {
+    $group: {
+      _id: null,
+      totalQuantity: { $sum: "$quantity" },
+      totalTransactions: { $sum: 1 } // Count the number of transactions
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      averageQuantityPerTransaction: { $divide: ["$totalQuantity", "$totalTransactions"] }
+    }
+  }
+])
+
+$group stage:
+
+In this stage, the documents from the sales collection are grouped together into a single group. The _id: null indicates that we are not grouping by any specific field, but rather creating a single group for all documents.
+Within the $group stage, two calculations are performed:
+totalQuantity: Using the $sum accumulator operator, this calculates the total quantity of products sold across all transactions. The $sum: "$quantity" expression sums up the quantity field for each document within the group.
+totalTransactions: This calculates the total number of transactions. By using $sum: 1, it counts the number of documents within the group, effectively counting the total number of transactions.
+$project stage:
+
+After the $group stage, the resulting group contains aggregated values (totalQuantity and totalTransactions), but it also includes the _id field, which is set to null.
+In the $project stage, we reshape the output document to remove the _id field (since we are not interested in it) and calculate the averageQuantityPerTransaction.
+The averageQuantityPerTransaction field is computed using the $divide arithmetic operator. It divides the totalQuantity by totalTransactions to obtain the average quantity of products sold per transaction.
+
+
+db.sales.aggregate([
+  {
+    $group: {
+      _id: null,
+      totalQuantity: { $sum: '$quantity' },
+      totalTransactions: { $count: {} } // Corrected to $count: {}
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      averageQuantityPerTransaction: { $divide: ["$totalQuantity", "$totalTransactions"] }
+    }
+  }
+])
+
+
+e. Group the sales transactions by product and calculate the total quantity sold for each product.
+
+db.sales.aggregate({$group: {_id: '$product', totalQuantity: {$sum: '$quantity'}}})
+
+
+f. Determine the product that generated the highest total revenue.
+
+db.sales.aggregate([
+  {
+    $group: {
+      _id: "$product", // Group by the product field
+      totalRevenue: { $sum: { $multiply: ["$price", "$quantity"] } } // Calculate the total revenue generated for each product
+    }
+  },
+  {
+    $sort: { totalRevenue: -1 } // Sort the results in descending order of total revenue
+  },
+  {
+    $limit: 1 // Limit the result to the first document, which will have the highest total revenue
+  }
+])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
