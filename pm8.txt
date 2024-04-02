@@ -33,6 +33,37 @@ Light Belgian waffles covered with strawberries and whipped cream
 <name>Berry-Berry Belgian Waffles</name>
 <price>$8.95</price>
 <description>
+
+
+XPath to select all the title nodes: 
+
+/foodmenu/food/name
+
+for $x in /breakfast_menu/food
+return <food_name>{$x[1]/name}</food_name>
+
+XPath to select the title of the food with price higher than $45: 
+
+for $x in /foodmenu/food
+where number(substring($x/price, 2)) > 4.5
+return <food_name>{$x/name}</food_name>
+
+
+XPath to select the description of food with name French Toast: 
+
+/foodmenu/food[name = 'French Toast']/description
+
+for $x in /foodmenu/food
+where $x/name='French Toast'
+return <food_name>{$x/description}</food_name>
+
+for $x in /foodmenu/food
+where $x/name=['French Toast','Grilled Salmon']
+return <food_name>{$x/description}</food_name>
+
+
+
+
 Light Belgian waffles covered with an assortment of fresh berries and whipped cream
 </description>
 <calories>900</calories>
