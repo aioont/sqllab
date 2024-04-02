@@ -1,0 +1,67 @@
+<data>
+    <person>
+        <name>John</name>
+        <age>30</age>
+        <city>New York</city>
+    </person>
+    <person>
+        <name>Alice</name>
+        <age>25</age>
+        <city>London</city>
+    </person>
+    <person>
+        <name>Michael</name>
+        <age>40</age>
+        <city>Paris</city>
+    </person>
+</data>
+
+
+Select all the names of persons.
+
+for 4x in /data/person
+return $x/name
+
+Select the age of the person named "Alice".
+
+for $x in /data/person
+where $x[name='Alice']
+return $x/age
+
+Select the city where the age of the person is greater than 30.
+
+for $x in /data/person
+where $x/age>30
+return $x/city
+
+
+Select the count of all persons.
+
+count(/data/person/)
+
+Select the average age of all persons.
+
+avg(/data/person/age)
+
+Select the name of the oldest person.
+
+/data/person[not(age < ../person/age)][1]/name
+
+let $agemin:=max(//age)
+for $x in /data/person
+where $x/age=$agemin
+return $x/name
+
+Select the name of the youngest person.
+
+let $amax:=max(//age)
+for $x in /data/person
+where $x/age=$amax
+return $x/name
+
+
+Select the names of all persons in alphabetical order.
+
+for $person in /data/person
+order by $person/name
+return $person/name
