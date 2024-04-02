@@ -306,10 +306,12 @@
 for $name in CATALOG/PLANT/COMMON
 return <title>{data($name)}</title>
 
-
 let $maxAvailable:=max(//AVAILABILITY)
 for $p in //PLANT[AVAILABILITY = $maxAvailable]
 return $p/COMMON
+
+/CATALOG/PLANT[not(AVAILABILITY < ../PLANT/AVAILABILITY)]/COMMON
+
 
 for $b in CATALOG/PLANT/BOTANICAL
 return data($b)
