@@ -25,7 +25,10 @@ INSERT INTO SALE_ORDER VALUES('O19003','2023-08-12','C00001','DELIVERED','2023-0
 
 d) SELECT name,city, pincode FROM CLIENT_MASTER, SALE_ORDER where (CLIENT_MASTER.client_no=SALE_ORDER.client_no_ref) and (SALE_ORDER.order_no='O19003' or SALE_ORDER.order_no='O19002');
 
-SELECT name, city, pincode from CLIENT_MASTER WHERE cno in (SELECT cnofk from SALE_ORDER where order_no in('O19003','O19002'));
+SELECT name, city, pincode 
+FROM CLIENT_MASTER 
+WHERE client_no IN (SELECT client_no_ref FROM SALE_ORDER WHERE order_no IN ('O19003', 'O19002'));
+
 
 
 e) SELECT client_no, name, city, pincode FROM CLIENT_MASTER, SALE_ORDER where CLIENT_MASTER.client_no=SALE_ORDER.client_no_ref AND order_status='PROCESSING';
